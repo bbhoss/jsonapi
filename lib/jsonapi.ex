@@ -110,14 +110,16 @@ defmodule JSONAPI do
           id = Map.get(data, map_key)
           as_relationship(id, view)
         else
-          []
+          nil
         end
       end
 
-      acc = put_in(acc, [:rel, key],%{
-        links: %{},  #todo figure out params here ¯\_(ツ)_/¯
-        data: rel_data
-      })
+      if rel_data do
+        acc = put_in(acc, [:rel, key],%{
+              links: %{},  #todo figure out params here ¯\_(ツ)_/¯
+              data: rel_data
+        })
+      end
 
       if loaded?(assoc_data) && rel_data do
         data = Map.put(val, :data, assoc_data)
